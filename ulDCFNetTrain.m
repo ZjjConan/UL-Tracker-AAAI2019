@@ -22,14 +22,6 @@
 
 %     imdb = load(opts.imdbDir);
 
-%     for i = 1:numel(imdb.images.data)
-%         imgs = vl_imreadjpeg(imdb.images.data{i}, 'NumThreads', 4, 'Resize', [200 200]);
-%         for j = 1:numel(imgs)
-%             imshow(uint8(imgs{j}));
-%             pause(0.0001);
-%         end
-%     end
-
     %% setup network
     netOpts.lossType = 1;
     netOpts.inputSize = 125;
@@ -56,7 +48,7 @@
     opts.trainOpts.learningRate = logspace(-2,-4,20);
     opts.trainOpts.numEpochs = numel(opts.trainOpts.learningRate);
     opts.trainOpts.derOutputs = {'objective', 1};
-    opts.trainOpts.continue = false;
+    opts.trainOpts.continue = true;
 
     opts.trainOpts.getDataFcn = @DCFNetGetData;
     opts.trainOpts.getBatchFcn = ...
