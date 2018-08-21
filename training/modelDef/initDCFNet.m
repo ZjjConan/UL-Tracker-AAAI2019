@@ -15,9 +15,9 @@ function net = initDCFNet(opts)
     
     conv2 = dagnn.Conv('size', [3 3 32 32], 'pad', 0, 'stride', 1, 'dilate', 1, 'hasBias', true) ;
     net.addLayer('conv2', conv2, {'conv1x'}, {'conv2'}, {'conv2f', 'conv2b'}) ;
-    net.addLayer('norm1', dagnn.LRN('param',[5 1 0.0001/5 0.75]), {'conv2'}, {'x'});
+    net.addLayer('norm1', dagnn.LRN('param',[5 1 0.0001/5 0.75]), {'conv2'}, {'conv2n'});
     
-%     net.addLayer('drop1', dagnn.DropOut, {'conv2n'}, {'x'});
+    net.addLayer('drop1', dagnn.DropOut, {'conv2n'}, {'x'});
     
     %% search
     conv1s = dagnn.Conv('size', [3 3 3 32], 'pad', 0, 'stride', 1, 'dilate', 1, 'hasBias', true) ;
@@ -26,9 +26,9 @@ function net = initDCFNet(opts)
     
     conv2s = dagnn.Conv('size', [3 3 32 32], 'pad', 0, 'stride', 1, 'dilate', 1, 'hasBias', true) ;
     net.addLayer('conv2s', conv2s, {'conv1sx'}, {'conv2s'}, {'conv2f', 'conv2b'}) ;
-    net.addLayer('norm1s', dagnn.LRN('param',[5 1 0.0001/5 0.75]), {'conv2s'}, {'z'});
+    net.addLayer('norm1s', dagnn.LRN('param',[5 1 0.0001/5 0.75]), {'conv2s'}, {'conv2sn'});
     
-%     net.addLayer('drop1s', dagnn.DropOut, {'conv2sn'}, {'z'});
+    net.addLayer('drop1s', dagnn.DropOut, {'conv2sn'}, {'z'});
     
     feature_sz = opts.inputSize([1,1]) - [4, 4];
 

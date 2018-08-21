@@ -20,7 +20,7 @@
     opts.outDir = fullfile(opts.outDir, [opts.saveModelName ' - r' num2str(etime)]);
     ulMakeDir(opts.outDir);
 
-    imdb = load(opts.imdbDir);
+%     imdb = load(opts.imdbDir);
 
     %% setup network
     netOpts.lossType = 1;
@@ -32,7 +32,7 @@
     opts.trackOpts.gpus = opts.gpus;
     opts.trackOpts.visualization = 0;
     opts.trackOpts.trackingFeatrLayer = 'conv1s';
-    opts.trackOpts.numImagesPerClip = 1;
+    opts.trackOpts.numImagesPerClip = 2;
     opts.trackOpts.maxInterval = 50;
     opts.trackOpts.trackingNumPerEpoch = 3;
     opts.trackOpts.selectNums = 32;
@@ -42,13 +42,13 @@
     opts.trackOpts.getBatchFcn = @getBatchFromClip;
 
     % trainOpts
-    opts.trainOpts.randpermute = true;
+    opts.trainOpts.randpermute = false;
     opts.trainOpts.momentum = 0.9;
     opts.trainOpts.weightDecay = 0.0005;
-    opts.trainOpts.learningRate = logspace(-2,-4,20);
+    opts.trainOpts.learningRate = logspace(-2, -4, 20);
     opts.trainOpts.numEpochs = numel(opts.trainOpts.learningRate);
     opts.trainOpts.derOutputs = {'objective', 1};
-    opts.trainOpts.continue = false;
+    opts.trainOpts.continue = true;
 
     opts.trainOpts.getDataFcn = @DCFNetGetData;
     opts.trainOpts.getBatchFcn = ...

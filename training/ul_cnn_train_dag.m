@@ -83,7 +83,7 @@ function net = ul_cnn_train_dag(net, imdb, varargin)
         for t = 1:opts.trackOpts.trackingNumPerEpoch
             bstart = (t-1) * numClips + 1;
             bend = min(t * numClips, numel(imdb.images.data));
-            trainData = opts.trainOpts.getDataFcn(imdb, net, perm(bstart:bend), opts.trackOpts); 
+            trainData = opts.trainOpts.getDataFcn(imdb, net, perm(bstart:bend), opts.trackOpts, e); 
             
             numData = size(trainData.search, 4);
             if opts.trainOpts.randpermute

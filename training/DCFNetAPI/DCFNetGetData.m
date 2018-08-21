@@ -1,4 +1,4 @@
-function data = DCFNetGetData(imdb, net, batch, opts)
+function data = DCFNetGetData(imdb, net, batch, opts, epoch)
 
     net4track = splitNet(net, opts.trackingFeatrLayer);                 
     net4track.layers(1).block.pad = 1;
@@ -72,7 +72,8 @@ function data = DCFNetGetData(imdb, net, batch, opts)
             target{i} = bilinearCrop(imgs(:,:,:,1), x_pos(:, [2,1]), x_sz([2,1], :), inputSize, opts.yyxx);
             search{i} = bilinearCrop(imgs(:,:,:,2), z_pos(:, [2,1]), z_sz([2,1], :), inputSize, opts.yyxx);
         
-            fprintf('tracking %3d / %3d batch %3d / %3d images time %.2fs\n', b, numBatches, i, numImages, toc);
+            fprintf('UL-Tracker: FBW tracking: epoch %02d: %2d / %2d batch %2d / %2d images time %.2fs\n', ...
+                epoch, b, numBatches, i, numImages, toc);
         end
     
         data.target{b} = gather(cat(4, target{:}));
