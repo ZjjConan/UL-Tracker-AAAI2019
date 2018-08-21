@@ -35,7 +35,7 @@ function data = DCFNetGetData(imdb, net, batch, opts)
             % FB verification
             score = FBWLocVerify(matches);
             % nms removing
-            pick = NMSPick([bbox score], 0.3);
+            pick = bboxNMS([bbox score], 0.3);
             score = score(pick);
             % sort
             [score, order] = sort(score, 'descend');
@@ -87,8 +87,8 @@ function score = FBWLocVerify(matches)
     score = diag(bboxOverlapRatio(matches.for{1}, matches.bak{1}));
 end
 
-function pick = NMSPick(bbox, threshold)
-    bbox(:, 3:4) = bbox(:, 1:2) + bbox(:, 3:4);
-    pick = bboxNMS(bbox, threshold);
+function pick = NMSPick(bbox)
+    bbox(:, 3:4) = bbox(:
+    pick = bboxNMS(bbox);
 end
 
