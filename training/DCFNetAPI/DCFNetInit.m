@@ -1,4 +1,4 @@
-function state = DCFNetInitState(net, img, region, varargin)
+function state = DCFNetInit(net, img, region, varargin)
 
     opts.gpus = true;
     opts.visualization = false;

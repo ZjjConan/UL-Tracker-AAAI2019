@@ -1,4 +1,4 @@
-function state = DCFNetTracking(state, img) 
+function state = DCFNetTrack(state, img) 
     state.currFrame = state.currFrame + 1;
     if state.opts.gpus
         img = gpuArray(img);
