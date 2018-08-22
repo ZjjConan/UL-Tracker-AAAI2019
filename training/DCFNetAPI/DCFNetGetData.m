@@ -28,34 +28,25 @@ function data = DCFNetGetData(imdb, net, batch, opts, epoch)
         for i = 1:numImages
             imgs = images(:,:,:,[i, i+numImages]);
             bbox = single(bboxes{i});
-            bbox = bbox(1:min(size(bbox,1),100), :);
+            bbox = bbox(1:min(size(bbox,1), 100), :);
           
             bbox(:, 1:2) = bbox(:, 1:2) - 1;
             matches = opts.trackingFcn(net4track, imgs, bbox, opts);    
             % FB verification
             score = FBWLocVerify(matches);
             % nms removing
-            pick = NMSPick([bbox score], 0.3);
+            pick = NMSPick([bbox score], 0.5);
             score = score(pick);
             % sort
             [score, order] = sort(score, 'descend');
             idx = score > opts.selectThre;
             order = order(idx);
             % select
-            sel = order(1:min(numel(order), opts.selectNums));
+            sel = pick(order(1:min(numel(order), opts.selectNums)));
             
-            x_boxes = matches.for{1}(pick(sel), :);
-%             y_boxes = matches.bak{1}(pick(sel), :);
-            z_boxes = matches.for{2}(pick(sel), :);
+            x_boxes = matches.for{1}(sel, :);
+            z_boxes = matches.for{2}(sel, :);
             
-%             for j = 1:size(x_boxes, 1)
-%                 figure(1); imshow(uint8(imgs(:,:,:,1))); 
-%                 rectangle('Position', x_boxes(j, :), 'EdgeColor', 'g');
-%                 rectangle('Position', y_boxes(j, :), 'EdgeColor', 'r');
-%                 figure(2); imshow(uint8(imgs(:,:,:,2))); 
-%                 rectangle('Position', z_boxes(j, :), 'EdgeColor', 'g');
-%             end
-        
             x_pos = (x_boxes(:, 1:2) + x_boxes(:, 3:4) / 2);
             z_pos = (z_boxes(:, 1:2) + z_boxes(:, 3:4) / 2);
             x_sz  = (x_boxes(:, 3:4) * (1 + net4track.meta.padding))';

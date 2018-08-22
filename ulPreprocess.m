@@ -24,7 +24,7 @@ videoNames = {'DK (2008)', 'GF (1972)', 'GF-II (1974)', 'LR-III (2003)', 'SR (19
 % opts.saveDir = 'D:/Dataset/Video/movie-dataset/boxes/';
 % % opts.debug = false;
 % 
-% % ssw options
+% ssw options
 % opts.maxImageSize = 500;
 % for i = 4
 %     filename = strsplit(videoNames{i}, '.');
@@ -33,14 +33,14 @@ videoNames = {'DK (2008)', 'GF (1972)', 'GF-II (1974)', 'LR-III (2003)', 'SR (19
 
 opts.imgDir = 'D:\Dataset\Video\movie-dataset\images\';
 opts.boxDir = 'D:\Dataset\Video\movie-dataset\boxes\';
-opts.saveDir = 'D:\Dataset\Video\movie-dataset\boxes-clean\';
+opts.saveDir = 'D:\Dataset\Video\movie-dataset\boxes-clean-plus\';
 
 % params
 params.removeWithMeanIntensity = true;
 params.intensityRange = [30 220];
 params.removeWithRatio = true;
 params.boxRatio = [0.1 0.7];
-params.removeWithBorder = false;
+params.removeWithBorder = true;
 % 
 for i = 5
     [~, vname, ~] = fileparts(videoNames{i});

@@ -11,7 +11,7 @@ function ulRemoveBoxes(varargin)
 
     opts.removeWithRatio = false;
     opts.boxRatio = [];
-
+    
     opts.removeWithBorder = false;
     
     [opts, varargin] = vl_argparse(opts, varargin);
@@ -32,9 +32,9 @@ function ulRemoveBoxes(varargin)
     frameSize = [iminfo.Width, iminfo.Height];
     tic
     for i = 1:numel(images)
-%         if exist(fullfile(opts.saveDir, [names{i} '.mat']))
-%             continue;
-%         end
+        if exist(fullfile(opts.saveDir, [names{i} '.mat']))
+            continue;
+        end
         
         s = load(boxes{i});
         bbox = s.bbox;
@@ -48,12 +48,10 @@ function ulRemoveBoxes(varargin)
             ok = ok | checkBorder(frameSize, bbox);
         end
         
-        
         bbox(~ok, :) = [];
         
         if ~isempty(bbox)
             bbox = ulClipBox(bbox, frameSize);
-
             if opts.removeWithMeanIntensity
                 patches = cropImagePatches(img, bbox);
                 mu = cellfun(@mean, ...
