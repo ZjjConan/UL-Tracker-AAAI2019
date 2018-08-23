@@ -21,6 +21,9 @@ function data = DCFNetGetData(imdb, net, batch, opts, epoch)
         subBatchStart = (b - 1) * subBatchSize + 1;
         subBatchEnd = min(b * subBatchSize, numel(batch));
         [images, bboxes] = opts.getBatchFcn(imdb, batch(subBatchStart:subBatchEnd), opts);
+        % augment images
+        images = augImages(images, opts);
+        
         numImages = size(images, 4)/2;
         target = cell(numImages, 1);
         search = cell(numImages, 1);
