@@ -32,7 +32,7 @@
     opts.trackOpts.gpus = opts.gpus;
     opts.trackOpts.visualization = 0;
     opts.trackOpts.trackingFeatrLayer = 'conv1s';
-    opts.trackOpts.numImagesPerClip = 1;
+    opts.trackOpts.numImagesPerClip = 4;
     opts.trackOpts.maxInterval = 50;
     opts.trackOpts.trackingNumPerEpoch = 3;
     opts.trackOpts.selectNums = 16;
@@ -53,8 +53,8 @@
     opts.trainOpts.getDataFcn = @DCFNetGetData;
     opts.trainOpts.getBatchFcn = ...
         @(x,y) getTrainBatch(x, y, 'gpus', [1], ...
-                             'augmentFlip', true, ...
-                             'averageImage', net.meta.normalization.averageImage);
+                    'averageImage', net.meta.normalization.averageImage, ...
+                    'augFlip', true, 'augGray', true);
 
     net = ul_cnn_train_dag(net, imdb, opts); 
     
@@ -64,17 +64,3 @@
         net = deployDCFNet(dagnn.DagNN.loadobj(net));
         save(fullfile(opts.saveModelDir, [opts.saveModelName ' - e' num2str(i) '.mat']), 'net');
     end
-
-%% stage 2 - fine-tuning with discovered pairs
-% opts.pairImgDir = opts.outPairImgDir;
-% opts.trainOpts.learningRate = logspace(-2,-5,20);
-% opts.trainOpts.numEpochs = numel(opts.trainOpts.learningRate);
-% opts.trainOpts.continue = false;
-% opts.trainOpts.gpus = opts.gpus;
-% opts.trainOpts.maxNumLoadedFiles = 100;
-% 
-% %% save final model
-% net = net_IL.copy();
-% net = sst_cnn_train_stage2(net, opts);
-% net = deployDCFNet(dagnn.DagNN.loadobj(net));
-% save(fullfile(opts.saveModelDir, [opts.saveModelName '-OF-' num2str(etime) '.mat']), 'net');

@@ -33,14 +33,14 @@ videoNames = {'DK (2008)', 'GF (1972)', 'GF-II (1974)', 'LR-III (2003)', 'SR (19
 
 opts.imgDir = 'D:\Dataset\Video\movie-dataset\images\';
 opts.boxDir = 'D:\Dataset\Video\movie-dataset\boxes\';
-opts.saveDir = 'D:\Dataset\Video\movie-dataset\boxes-clean-plus\';
+opts.saveDir = 'D:\Dataset\Video\movie-dataset\boxes-clean\';
 
 % params
 params.removeWithMeanIntensity = true;
 params.intensityRange = [30 220];
 params.removeWithRatio = true;
 params.boxRatio = [0.1 0.7];
-params.removeWithBorder = true;
+params.removeWithBorder = false;
 % 
 for i = 5
     [~, vname, ~] = fileparts(videoNames{i});
