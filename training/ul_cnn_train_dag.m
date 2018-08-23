@@ -20,6 +20,7 @@ function net = ul_cnn_train_dag(net, imdb, varargin)
     opts.trainOpts.getBatchFcn = @getTrainBatch;
     opts.trainOpts.getDataFcn = @dcfnet_get_data_online;
     
+    
     opts.trackOpts.visualization = false;
     opts.trackOpts.gpus = [];
     opts.trackOpts.trackingFeatrLayer = 'conv1s';
@@ -31,6 +32,12 @@ function net = ul_cnn_train_dag(net, imdb, varargin)
     opts.trackOpts.selectThre = 0.7;
     opts.trackOpts.trackingFcn = @DCFNetFBWTracking;
     opts.trackOpts.getBatchFcn = @getTrackingBatchFromClip;
+    opts.trackOpts.grayImage = true;
+    opts.trackOpts.grayProb = 0.25;
+    opts.trackOpts.blurImage = true;
+    opts.trackOpts.blurSigma = 2;
+    opts.trackOpts.blurProb = 0.25;
+
     [opts, varargin] = vl_argparse(opts, varargin);
     
     ulMakeDir(opts.outDir);
@@ -120,10 +127,10 @@ function net = ul_cnn_train_dag(net, imdb, varargin)
                 end
                 fprintf('\n') ;
             end
+            % save the memory
+            clear trainData;
         end
-        
-        % save the memory
-        clear trainData;
+    
         saveShot(net, state, stats, modelPath(e));
     end
         
