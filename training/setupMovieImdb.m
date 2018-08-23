@@ -31,7 +31,7 @@ function imdb = setupMovieImdb(varargin)
     
     if opts.isSegment
         if isempty(opts.clipDir)
-            warning("no clip index file found, do not generate clips !!!")
+            warning('no clip index file found, do not generate clips !!!')
         else
             tmpl = load(opts.clipDir);
             notok = tmpl.clips(:, 1) == -1; 

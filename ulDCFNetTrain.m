@@ -42,7 +42,7 @@
     opts.trackOpts.getBatchFcn = @getBatchFromClip;
 
     % trainOpts
-    opts.trainOpts.randpermute = false;
+    opts.trainOpts.randpermute = true;
     opts.trainOpts.momentum = 0.9;
     opts.trainOpts.weightDecay = 0.0005;
     opts.trainOpts.learningRate = logspace(-2, -4, 20);
