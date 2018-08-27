@@ -25,11 +25,12 @@ function images = augImages(images, varargin)
     
     if opts.blurImage
         index = randperm(numImages, round(numImages * opts.blurProb));
+        sigma = rand(1, numel(index)) * opts.blurSigma;
         for i = 1:numel(index)
             images(:,:,:,index(i)) = ...
-                imgaussfilt(images(:,:,:,index(i)), opts.blurSigma);  
+                imgaussfilt(images(:,:,:,index(i)), sigma(i));  
             images(:,:,:,index(i)+numImages) = ...
-                imgaussfilt(images(:,:,:,index(i)+numImages), opts.blurSigma);    
+                imgaussfilt(images(:,:,:,index(i)+numImages), sigma(i));    
         end
     end
 end

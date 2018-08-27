@@ -37,7 +37,11 @@ function net = ul_cnn_train_dag(net, imdb, varargin)
     opts.trackOpts.blurImage = true;
     opts.trackOpts.blurSigma = 2;
     opts.trackOpts.blurProb = 0.25;
-
+    opts.trackOpts.rotateImage = false;
+    opts.trackOpts.rotateProb = 0.25;
+    opts.trackOpts.rotateRange = [-60 60];
+    opts.trackOpts.gridGenerator = [];
+    
     [opts, varargin] = vl_argparse(opts, varargin);
     
     ulMakeDir(opts.outDir);
