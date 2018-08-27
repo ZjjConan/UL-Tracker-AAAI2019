@@ -20,7 +20,7 @@
     opts.outDir = fullfile(opts.outDir, [opts.saveModelName ' - r' num2str(etime)]);
     ulMakeDir(opts.outDir);
 
-%     imdb = load(opts.imdbDir);
+    imdb = load(opts.imdbDir);
 
     %% setup network
     netOpts.lossType = 1;
@@ -40,21 +40,17 @@
     opts.trackOpts.FBWBatchSize = 10;
     opts.trackOpts.trackingFcn = @DCFNetFBWTracking;  
     opts.trackOpts.getBatchFcn = @getBatchFromClip;
-    opts.trackOpts.gridGenerator = ...
-        dagnn.AffineGridGenerator('Ho', netOpts.inputSize, ...
-                                  'Wo', netOpts.inputSize); 
+    opts.trackOpts.gridGdagnn.AffineGridGenerator('Ho', batchOpts.inputSize(1), ...
+                              'Wo', batchOpts.inputSize(2)); 
     
     opts.trackOpts.grayImage = true;
     opts.trackOpts.grayProb = 0.25;
     opts.trackOpts.blurImage = true;
-    opts.trackOpts.blurSigma = 4;
+    opts.trackOpts.blurSigma = 2;
     opts.trackOpts.blurProb = 0.25;
-%     opts.trackOpts.rotateImage = true;
-%     opts.trackOpts.rotateProb = 0.25;
-%     opts.trackOpts.rotateRange = [-pi pi]/3;
-%     
+
     % trainOpts
-    opts.trainOpts.randpermute = false;
+    opts.trainOpts.randpermute = true;
     opts.trainOpts.momentum = 0.9;
     opts.trainOpts.weightDecay = 0.0005;
     opts.trainOpts.learningRate = logspace(-2, -3, 10);
@@ -66,7 +62,7 @@
     opts.trainOpts.getBatchFcn = ...
         @(x,y) getTrainBatch(x, y, 'gpus', [1], ...
                     'averageImage', net.meta.normalization.averageImage, ...
-                    'augFlip', true, 'augRotate', true);
+                    'augFlip', true);
 
     net = ul_cnn_train_dag(net, imdb, opts); 
     

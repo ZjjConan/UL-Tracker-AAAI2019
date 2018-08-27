@@ -9,7 +9,6 @@ function data = DCFNetGetData(imdb, net, batch, opts, epoch)
     if opts.gpus >= 1
         net4track.move('gpu');
         net.move('gpu');
-        opts.yyxx = gpuArray(opts.yyxx);
     end
  
     subBatchSize = 20;
@@ -23,7 +22,7 @@ function data = DCFNetGetData(imdb, net, batch, opts, epoch)
         [images, bboxes] = opts.getBatchFcn(imdb, batch(subBatchStart:subBatchEnd), opts);
         % augment images
         images = augImages(images, opts);
-        
+        opts.imageSize = size(images);
         numImages = size(images, 4)/2;
         target = cell(numImages, 1);
         search = cell(numImages, 1);
@@ -62,7 +61,12 @@ function data = DCFNetGetData(imdb, net, batch, opts, epoch)
                 x_sz = gpuArray(x_sz);
                 z_sz = gpuArray(z_sz);
             end
-        
+            
+%             x_grids = generateBilinearGrids(x_pos, x_sz, opts);
+%             z_grids = generateBilinearGrids(z_pos, z_sz, opts);
+%             target{i} = vl_nnbilinearsampler(imgs(:,:,:,1), x_grids); 
+%             search{i} = vl_nnbilinearsampler(imgs(:,:,:,2), z_grids);
+  
             target{i} = bilinearCrop(imgs(:,:,:,1), x_pos(:, [2,1]), x_sz([2,1], :), inputSize, opts.yyxx);
             search{i} = bilinearCrop(imgs(:,:,:,2), z_pos(:, [2,1]), z_sz([2,1], :), inputSize, opts.yyxx);
         
@@ -76,7 +80,6 @@ function data = DCFNetGetData(imdb, net, batch, opts, epoch)
     data.target = cat(4, data.target{:});
     data.search = cat(4, data.search{:});
 end
-
 
 function score = FBWLocVerify(matches)
     score = diag(bboxOverlapRatio(matches.for{1}, matches.bak{1}));
