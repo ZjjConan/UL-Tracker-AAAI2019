@@ -27,7 +27,7 @@ function inputs = getTrainBatch(imdb, batch, varargin)
     
     if opts.augFlip
         if rand > 0.5
-            inputs = {'target', target, 'search', fliplr(search)};
+            inputs = {'target', fliplr(target), 'search', search};
         end
     end
 end

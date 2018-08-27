@@ -130,10 +130,6 @@ function net = ul_cnn_train_dag(net, imdb, varargin)
             % save the memory
             clear trainData;
         end
-<<<<<<< HEAD
-=======
-    
->>>>>>> a738a5814977de2af52f98a7ca3e75619b9a7842
         saveShot(net, state, stats, modelPath(e));
     end
         
