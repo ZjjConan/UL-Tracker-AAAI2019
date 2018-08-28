@@ -26,18 +26,18 @@
     netOpts.lossType = 1;
     netOpts.inputSize = 125;
     netOpts.padding = 2;
-    netOpts.averageImage = reshape(single([123,117,104]), [1,1,3]);
+%     netOpts.averageImage = reshape(single([123,117,104]), [1,1,3]);
     net = initDCFNet(netOpts);
-    net.meta.normalization.averageImage = netOpts.averageImage;
+%     net.meta.normalization.averageImage = netOpts.averageImage;
 
     %% online tracking opts
     opts.trackOpts.gpus = opts.gpus;
     opts.trackOpts.visualization = 0;
     opts.trackOpts.trackingFeatrLayer = 'conv1s';
-    opts.trackOpts.numImagesPerClip = 4;
+    opts.trackOpts.numImagesPerClip = 2;
     opts.trackOpts.maxInterval = 10;
-    opts.trackOpts.trackingNumClips = 400;
-    opts.trackOpts.selectNums = 16;
+    opts.trackOpts.trackingNumClips = 300;
+    opts.trackOpts.selectNums = 32;
     opts.trackOpts.selectThre = 0.7;
     opts.trackOpts.FBWBatchSize = 10;
     opts.trackOpts.trackingFcn = @DCFNetFBWTracking;  
@@ -47,13 +47,13 @@
                                   'Wo', netOpts.inputSize); 
     
     opts.trackOpts.grayImage = true;
-    opts.trackOpts.grayProb = 0.1;
+    opts.trackOpts.grayProb = 0.25;
     opts.trackOpts.blurImage = true;
     opts.trackOpts.blurSigma = 4;
-    opts.trackOpts.blurProb = 0.1;
+    opts.trackOpts.blurProb = 0.25;
     opts.trackOpts.rotateImage = true;
-    opts.trackOpts.rotateProb = 0.1;
-    opts.trackOpts.rotateRange = [-pi pi]/3;
+    opts.trackOpts.rotateProb = 0.25;
+    opts.trackOpts.rotateRange = [-pi pi]/6;
      
     % trainOpts
     opts.trainOpts.randpermute = true;
@@ -67,8 +67,8 @@
     opts.trainOpts.getDataFcn = @DCFNetGetData;
     opts.trainOpts.getBatchFcn = ...
         @(x,y) getTrainBatch(x, y, 'gpus', [1], ...
-                   'averageImage', netOpts.averageImage, ...
-                   'augFlip', true);
+                   'averageImage', net.meta.normalization.averageImage, ...
+                   'augFlip', true, 'flipProb', 0.5);
 
     net = ul_cnn_train_dag(net, imdb, opts); 
     
