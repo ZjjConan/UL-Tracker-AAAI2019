@@ -11,7 +11,7 @@
     opts.imdbDir = ['data/imdb/' videoName '_imdb.mat'];
     
     opts.outDir = 'data/snapshot/';
-    opts.saveModelDir = 'F:/Research/tracker_zoo/DCFNet/model';
+    opts.saveModelDir = '/media/zjjconan/Experiments/tracker_zoo/DCFNet/model/';
     opts.saveModelName = ['DCFNet - ' videoName];
     opts.outPairImgDir = 'data/pairs/';
     opts.saveInternalPairs = false;
@@ -20,7 +20,7 @@
     opts.outDir = fullfile(opts.outDir, [opts.saveModelName ' - r' num2str(etime)]);
     ulMakeDir(opts.outDir);
 
-%     imdb = load(opts.imdbDir);
+    imdb = load(opts.imdbDir);
 
     %% setup network
     netOpts.lossType = 1;
@@ -45,10 +45,10 @@
                                   'Wo', netOpts.inputSize); 
     
     opts.trackOpts.grayImage = true;
-    opts.trackOpts.grayProb = 0.25;
+    opts.trackOpts.grayProb = 0.1;
     opts.trackOpts.blurImage = true;
-    opts.trackOpts.blurSigma = 4;
-    opts.trackOpts.blurProb = 0.25;
+    opts.trackOpts.blurSigma = 2;
+    opts.trackOpts.blurProb = 0.1;
 %     opts.trackOpts.rotateImage = true;
 %     opts.trackOpts.rotateProb = 0.25;
 %     opts.trackOpts.rotateRange = [-pi pi]/3;

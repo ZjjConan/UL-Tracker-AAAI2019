@@ -134,7 +134,6 @@ function net = ul_cnn_train_dag(net, imdb, varargin)
             % save the memory
             clear trainData;
         end
-    
         saveShot(net, state, stats, modelPath(e));
     end
         

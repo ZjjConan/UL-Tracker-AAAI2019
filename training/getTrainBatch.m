@@ -2,8 +2,10 @@ function inputs = getTrainBatch(imdb, batch, varargin)
     opts.gpus = [];
     opts.averageImage = [];
     opts.augFlip = false;
+    opts.flipProb = 0.1;
+    
     opts.augRotate = false;
-    opts.rotateProb = 0.25;
+    opts.rotateProb = 0.1;
     opts.rotateRange = [-60 60];
     
     [opts, varargin] = vl_argparse(opts, varargin);
@@ -25,12 +27,11 @@ function inputs = getTrainBatch(imdb, batch, varargin)
             search = bsxfun(@minus, search, opts.averageImage);
         end
     end
-    
-    inputs = {'target', target, 'search', search} ;
-    
+ 
     if opts.augFlip
-        if rand > 0.5
-            inputs = {'target', target, 'search', fliplr(search)};
+        index = randperm(size(target,4), round(size(target,4) * opts.flipProb));
+        for i = 1:numel(index)
+            search(:,:,:,index(i)) = fliplr(search(:,:,:,index(i)));
         end
     end
     
@@ -39,7 +40,8 @@ function inputs = getTrainBatch(imdb, batch, varargin)
         theta = randi(opts.rotateRange, 1, numel(index));
         for i = 1:numel(index)
             search(:,:,:,index(i)) = imrotate(search(:,:,:,index(i)), theta(i), 'bilinear', 'crop');
-        end
-        inputs = {'target', target, 'search', search};
+        end 
     end
+    
+    inputs = {'target', target, 'search', search} ;
 end
