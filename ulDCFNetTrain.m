@@ -45,16 +45,16 @@
                                   'Wo', netOpts.inputSize); 
     
     opts.trackOpts.grayImage = true;
-    opts.trackOpts.grayProb = 0.25;
+    opts.trackOpts.grayProb = 0.1;
     opts.trackOpts.blurImage = true;
-    opts.trackOpts.blurSigma = 4;
-    opts.trackOpts.blurProb = 0.25;
+    opts.trackOpts.blurSigma = 2;
+    opts.trackOpts.blurProb = 0.1;
 %     opts.trackOpts.rotateImage = true;
 %     opts.trackOpts.rotateProb = 0.25;
 %     opts.trackOpts.rotateRange = [-pi pi]/3;
 %     
     % trainOpts
-    opts.trainOpts.randpermute = false;
+    opts.trainOpts.randpermute = true;
     opts.trainOpts.momentum = 0.9;
     opts.trainOpts.weightDecay = 0.0005;
     opts.trainOpts.learningRate = logspace(-2, -3, 10);
@@ -66,13 +66,7 @@
     opts.trainOpts.getBatchFcn = ...
         @(x,y) getTrainBatch(x, y, 'gpus', [1], ...
                     'averageImage', net.meta.normalization.averageImage, ...
-<<<<<<< HEAD
-                    'augFlip', true, ...
-                    'augRotate', true, ...
-                    'rotateRange', []);
-=======
                     'augFlip', true, 'augRotate', true);
->>>>>>> 852eb458e2dfc78410e7d2cc4264e3f63518bbbe
 
     net = ul_cnn_train_dag(net, imdb, opts); 
     
