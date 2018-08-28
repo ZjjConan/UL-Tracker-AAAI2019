@@ -54,7 +54,7 @@
 %     opts.trackOpts.rotateRange = [-pi pi]/3;
 %     
     % trainOpts
-    opts.trainOpts.randpermute = false;
+    opts.trainOpts.randpermute = true;
     opts.trainOpts.momentum = 0.9;
     opts.trainOpts.weightDecay = 0.0005;
     opts.trainOpts.learningRate = logspace(-2, -3, 10);
