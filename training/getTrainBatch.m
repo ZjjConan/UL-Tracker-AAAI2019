@@ -4,9 +4,9 @@ function inputs = getTrainBatch(imdb, batch, varargin)
     opts.augFlip = false;
     opts.flipProb = 0.1;
     
-    opts.augRotate = false;
-    opts.rotateProb = 0.1;
-    opts.rotateRange = [-60 60];
+%     opts.augRotate = false;
+%     opts.rotateProb = 0.1;
+%     opts.rotateRange = [-60 60];
     
     [opts, varargin] = vl_argparse(opts, varargin);
     
@@ -35,13 +35,12 @@ function inputs = getTrainBatch(imdb, batch, varargin)
         end
     end
     
-    if opts.augRotate
-        index = randperm(size(target,4), round(size(target,4) * opts.rotateProb));
-        theta = randi(opts.rotateRange, 1, numel(index));
-        for i = 1:numel(index)
-            search(:,:,:,index(i)) = imrotate(search(:,:,:,index(i)), theta(i), 'bilinear', 'crop');
-        end 
-    end
-    
+%     if opts.augRotate
+%         index = randperm(size(target,4), round(size(target,4) * opts.rotateProb));
+%         theta = randi(opts.rotateRange, 1, numel(index));
+%         for i = 1:numel(index)
+%             search(:,:,:,index(i)) = imrotate(search(:,:,:,index(i)), theta(i), 'nearest', 'crop');
+%         end 
+%     end
     inputs = {'target', target, 'search', search} ;
 end

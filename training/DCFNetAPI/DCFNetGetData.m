@@ -49,8 +49,8 @@ function data = DCFNetGetData(imdb, net, batch, opts, epoch)
             x_boxes = matches.for{1}(sel, :);
             z_boxes = matches.for{2}(sel, :);
             
-            x_pos = (x_boxes(:, 1:2) + x_boxes(:, 3:4) / 2);
-            z_pos = (z_boxes(:, 1:2) + z_boxes(:, 3:4) / 2);
+            x_pos = (x_boxes(:, 1:2) + x_boxes(:, 3:4) / 2)';
+            z_pos = (z_boxes(:, 1:2) + z_boxes(:, 3:4) / 2)';
             x_sz  = (x_boxes(:, 3:4) * (1 + net4track.meta.padding))';
             z_sz  = (z_boxes(:, 3:4) * (1 + net4track.meta.padding))';
          
@@ -62,13 +62,15 @@ function data = DCFNetGetData(imdb, net, batch, opts, epoch)
                 z_sz = gpuArray(z_sz);
             end
             
-%             x_grids = generateBilinearGrids(x_pos, x_sz, opts);
-%             z_grids = generateBilinearGrids(z_pos, z_sz, opts);
-%             target{i} = vl_nnbilinearsampler(imgs(:,:,:,1), x_grids); 
-%             search{i} = vl_nnbilinearsampler(imgs(:,:,:,2), z_grids);
+            opts.rotateImage = false;
+            x_grids = generateBilinearGrids(x_pos, x_sz, opts);
+            opts.rotateImage = true;
+            z_grids = generateBilinearGrids(z_pos, z_sz, opts);
+            target{i} = vl_nnbilinearsampler(imgs(:,:,:,1), x_grids); 
+            search{i} = vl_nnbilinearsampler(imgs(:,:,:,2), z_grids);
   
-            target{i} = bilinearCrop(imgs(:,:,:,1), x_pos(:, [2,1]), x_sz([2,1], :), inputSize, opts.yyxx);
-            search{i} = bilinearCrop(imgs(:,:,:,2), z_pos(:, [2,1]), z_sz([2,1], :), inputSize, opts.yyxx);
+%             target{i} = bilinearCrop(imgs(:,:,:,1), x_pos(:, [2,1]), x_sz([2,1], :), inputSize, opts.yyxx);
+%             search{i} = bilinearCrop(imgs(:,:,:,2), z_pos(:, [2,1]), z_sz([2,1], :), inputSize, opts.yyxx);
         
             fprintf('UL-Tracker: FBW tracking: epoch %02d: %2d / %2d batch %2d / %2d images time %.2fs\n', ...
                 epoch, b, numBatches, i, numImages, toc);

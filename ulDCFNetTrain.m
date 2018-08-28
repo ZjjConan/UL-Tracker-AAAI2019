@@ -20,13 +20,15 @@
     opts.outDir = fullfile(opts.outDir, [opts.saveModelName ' - r' num2str(etime)]);
     ulMakeDir(opts.outDir);
 
-    imdb = load(opts.imdbDir);
+%     imdb = load(opts.imdbDir);
 
     %% setup network
     netOpts.lossType = 1;
     netOpts.inputSize = 125;
     netOpts.padding = 2;
+    netOpts.averageImage = reshape(single([123,117,104]), [1,1,3]);
     net = initDCFNet(netOpts);
+    net.meta.normalization.averageImage = netOpts.averageImage;
 
     %% online tracking opts
     opts.trackOpts.gpus = opts.gpus;
@@ -45,14 +47,14 @@
                                   'Wo', netOpts.inputSize); 
     
     opts.trackOpts.grayImage = true;
-    opts.trackOpts.grayProb = 0.1;
+    opts.trackOpts.grayProb = 0.25;
     opts.trackOpts.blurImage = true;
-    opts.trackOpts.blurSigma = 2;
-    opts.trackOpts.blurProb = 0.1;
-%     opts.trackOpts.rotateImage = true;
-%     opts.trackOpts.rotateProb = 0.25;
-%     opts.trackOpts.rotateRange = [-pi pi]/3;
-%     
+    opts.trackOpts.blurSigma = 4;
+    opts.trackOpts.blurProb = 0.25;
+    opts.trackOpts.rotateImage = true;
+    opts.trackOpts.rotateProb = 0.25;
+    opts.trackOpts.rotateRange = [-pi pi]/3;
+     
     % trainOpts
     opts.trainOpts.randpermute = true;
     opts.trainOpts.momentum = 0.9;
@@ -65,8 +67,8 @@
     opts.trainOpts.getDataFcn = @DCFNetGetData;
     opts.trainOpts.getBatchFcn = ...
         @(x,y) getTrainBatch(x, y, 'gpus', [1], ...
-                    'averageImage', net.meta.normalization.averageImage, ...
-                    'augFlip', true, 'augRotate', true);
+                   'averageImage', netOpts.averageImage, ...
+                   'augFlip', true);
 
     net = ul_cnn_train_dag(net, imdb, opts); 
     

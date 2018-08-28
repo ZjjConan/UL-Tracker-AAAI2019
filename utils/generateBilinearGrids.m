@@ -1,10 +1,5 @@
 function g = generateBilinearGrids(p, s, opts)
-    % bbox [x y w h]
-%     bbox(:, 1:2) = bbox(:, 1:2) - 1;
-%     s = opts.inputSize / (opts.inputSize - opts.cropPadding*2);
     n = size(p, 2);
-%     p = (bbox(:, 1:2) + bbox(:, 3:4) / 2)';
-%     s = bbox(:, 3:4)' * s;
     
     im_h = opts.imageSize(1) - 1;
     im_w = opts.imageSize(2) - 1;
@@ -24,7 +19,7 @@ function g = generateBilinearGrids(p, s, opts)
         degree(index) = rand(1, numel(index)) * accusum - mu;
         cosTheta = cos(degree);
         sinTheta = sin(degree);
-        g = [g(1,:).*cosTheta; -sinTheta; sinTheta; g(4,:).*cosTheta; g(5,:); g(6,:)];
+        g = [g(1,:).*cosTheta; sinTheta; -sinTheta; g(4,:).*cosTheta; g(5,:); g(6,:)];
     end
     
     g = reshape(g, 1, 1, size(g, 1), n);
