@@ -20,7 +20,7 @@
     opts.outDir = fullfile(opts.outDir, [opts.saveModelName ' - r' num2str(etime)]);
     ulMakeDir(opts.outDir);
 
-%     imdb = load(opts.imdbDir);
+    imdb = load(opts.imdbDir);
 
     %% setup network
     netOpts.lossType = 1;
