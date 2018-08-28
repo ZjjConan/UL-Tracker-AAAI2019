@@ -36,7 +36,7 @@
     opts.trackOpts.trackingFeatrLayer = 'conv1s';
     opts.trackOpts.numImagesPerClip = 4;
     opts.trackOpts.maxInterval = 10;
-    opts.trackOpts.trackingNumPerEpoch = 3;
+    opts.trackOpts.trackingNumClips = 400;
     opts.trackOpts.selectNums = 16;
     opts.trackOpts.selectThre = 0.7;
     opts.trackOpts.FBWBatchSize = 10;
@@ -47,12 +47,12 @@
                                   'Wo', netOpts.inputSize); 
     
     opts.trackOpts.grayImage = true;
-    opts.trackOpts.grayProb = 0.25;
+    opts.trackOpts.grayProb = 0.1;
     opts.trackOpts.blurImage = true;
     opts.trackOpts.blurSigma = 4;
-    opts.trackOpts.blurProb = 0.25;
+    opts.trackOpts.blurProb = 0.1;
     opts.trackOpts.rotateImage = true;
-    opts.trackOpts.rotateProb = 0.25;
+    opts.trackOpts.rotateProb = 0.1;
     opts.trackOpts.rotateRange = [-pi pi]/3;
      
     % trainOpts

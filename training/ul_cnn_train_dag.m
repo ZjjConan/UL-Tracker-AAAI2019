@@ -24,7 +24,7 @@ function net = ul_cnn_train_dag(net, imdb, varargin)
     opts.trackOpts.visualization = false;
     opts.trackOpts.gpus = [];
     opts.trackOpts.trackingFeatrLayer = 'conv1s';
-    opts.trackOpts.trackingNumPerEpoch = 20;
+    opts.trackOpts.trackingNumClips = 400;
     opts.trackOpts.numImagesPerClip = 25;
     opts.trackOpts.maxInterval = 10;
     opts.trackOpts.FBWBatchSize = 16;
@@ -87,22 +87,16 @@ function net = ul_cnn_train_dag(net, imdb, varargin)
             end
         end
         
-        numClips = ceil(numel(imdb.images.data) / opts.trackOpts.trackingNumPerEpoch);
+        trackingNumPerEpoch = ceil(numel(imdb.images.data) / opts.trackOpts.trackingNumClips);
         stats.num = 0 ; % return something even if subset = []
         stats.time = 0 ;
         start = tic;
-        for t = 1:opts.trackOpts.trackingNumPerEpoch
-            bstart = (t-1) * numClips + 1;
-            bend = min(t * numClips, numel(imdb.images.data));
+        for t = 1:trackingNumPerEpoch
+            bstart = (t-1) * opts.trackOpts.trackingNumClips + 1;
+            bend = min(t * opts.trackOpts.trackingNumClips, numel(imdb.images.data));
             trainData = opts.trainOpts.getDataFcn(imdb, net, perm(bstart:bend), opts.trackOpts, e); 
             
-            numData = size(trainData.search, 4);
-            if opts.trainOpts.randpermute
-               order = randperm(numData);
-               trainData.search = trainData.search(:,:,:,order);
-               trainData.target = trainData.target(:,:,:,order);
-            end
-
+            numData = size(trainData.target, 4);
             trainBatches = ceil(numData / opts.trainOpts.batchSize);
             net.mode = 'normal' ;
             for it = 1:trainBatches
