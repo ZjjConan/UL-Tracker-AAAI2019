@@ -11,7 +11,7 @@ function data = DCFNetGetData(imdb, net, batch, opts, epoch)
         net.move('gpu');
     end
  
-    subBatchSize = 20;
+    subBatchSize = 2;
     numBatches = ceil(numel(batch)/subBatchSize);
     data.target = cell(numBatches, 1);
     data.search = cell(numBatches, 1);
