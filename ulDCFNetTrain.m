@@ -16,12 +16,12 @@
     opts.outPairImgDir = 'data/pairs/';
     opts.saveInternalPairs = false;
     opts.gpus = [1];
-
+ 
     opts.outDir = fullfile(opts.outDir, [opts.saveModelName ' - r' num2str(etime)]);
     ulMakeDir(opts.outDir);
-
+ 
     imdb = load(opts.imdbDir);
-
+ 
     %% setup network
     netOpts.lossType = 1;
     netOpts.inputSize = 125;
@@ -29,7 +29,7 @@
     netOpts.averageImage = reshape(single([123,117,104]), [1,1,3]);
     net = initDCFNet(netOpts);
     net.meta.normalization.averageImage = netOpts.averageImage;
-
+ 
     %% online tracking opts
     opts.trackOpts.gpus = opts.gpus;
     opts.trackOpts.visualization = 0;
@@ -63,13 +63,13 @@
     opts.trainOpts.numEpochs = numel(opts.trainOpts.learningRate);
     opts.trainOpts.derOutputs = {'objective', 1};
     opts.trainOpts.continue = false;
-
+ 
     opts.trainOpts.getDataFcn = @DCFNetGetData;
     opts.trainOpts.getBatchFcn = ...
         @(x,y) getTrainBatch(x, y, 'gpus', [1], ...
                    'averageImage', netOpts.averageImage, ...
                    'augFlip', true, 'flipProb', 0.25);
-
+ 
     net = ul_cnn_train_dag(net, imdb, opts); 
     
     modelPath = @(ep) fullfile(opts.outDir, sprintf('net-epoch-%d.mat', ep));
@@ -78,3 +78,5 @@
         net = deployDCFNet(dagnn.DagNN.loadobj(net));
         save(fullfile(opts.saveModelDir, [opts.saveModelName ' - e' num2str(i) '.mat']), 'net');
     end
+
+
