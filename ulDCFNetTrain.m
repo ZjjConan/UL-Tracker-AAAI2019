@@ -2,7 +2,7 @@
     % script for self-supervised learning using dcfnet
     clc;
     
-    videoName = 'SR (1994)';  
+    videoName = 'DK (2008)';  
 %     if nargin < 2
         etime = 1;
 %     end
@@ -49,7 +49,7 @@
     opts.trackOpts.grayImage = true;
     opts.trackOpts.grayProb = 0.25;
     opts.trackOpts.blurImage = true;
-    opts.trackOpts.blurSigma = 2;
+    opts.trackOpts.blurSigma = 4;
     opts.trackOpts.blurProb = 0.25;
     opts.trackOpts.rotateImage = true;
     opts.trackOpts.rotateProb = 0.25;
@@ -59,7 +59,7 @@
     opts.trainOpts.randpermute = true;
     opts.trainOpts.momentum = 0.9;
     opts.trainOpts.weightDecay = 0.0005;
-    opts.trainOpts.learningRate = logspace(-2, -4, 10);
+    opts.trainOpts.learningRate = logspace(-2, -3, 10);
     opts.trainOpts.numEpochs = numel(opts.trainOpts.learningRate);
     opts.trainOpts.derOutputs = {'objective', 1};
     opts.trainOpts.continue = false;
@@ -68,7 +68,7 @@
     opts.trainOpts.getBatchFcn = ...
         @(x,y) getTrainBatch(x, y, 'gpus', [1], ...
                    'averageImage', netOpts.averageImage, ...
-                   'augFlip', true);
+                   'augFlip', true, 'flipProb', 0.25);
 
     net = ul_cnn_train_dag(net, imdb, opts); 
     
