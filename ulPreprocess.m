@@ -54,17 +54,17 @@ clc; clear all; close all;
 % 
 % 
 % segment videos
-opts.imgDir = 'D:\Dataset\Video\movie-dataset\images\';
+opts.imgDir = 'C:\';
 opts.boxDir = 'D:\Dataset\Video\movie-dataset\boxes_clean\';
 opts.saveDir = 'data/clips';
 
 params.useCorr = true;
 params.batchSize = 50;
-params.corrMinThre = 0.3;
+params.corrMinThre = 0.1;
 params.resizeRatio = 0.2;
 params.debug = false;
-videoNames = {'DK (2008)', 'GF (1972)', 'GF-II (1974)', 'LR-III (2003)'};
-for i = 2:4
+videoNames = {'SR (1994)', 'DK (2008)', 'GF (1972)', 'GF-II (1974)', 'LR-III (2003)'};
+for i = 1
     [~, vname, ~] = fileparts(videoNames{i});
     params.imgDir = fullfile(opts.imgDir, [vname ' - Resized']);
     params.boxDir = fullfile(opts.boxDir, vname);

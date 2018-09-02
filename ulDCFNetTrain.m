@@ -2,7 +2,7 @@
     % script for self-supervised learning using dcfnet
     clc;
     
-    videoName = 'DK (2008)';  
+    videoName = 'SR (1994)';  
 %     if nargin < 2
         etime = 1;
 %     end
@@ -19,15 +19,9 @@
  
     opts.outDir = fullfile(opts.outDir, [opts.saveModelName ' - r' num2str(etime)]);
     ulMakeDir(opts.outDir);
-<<<<<<< HEAD
- 
-    imdb = load(opts.imdbDir);
- 
-=======
+%     imdb = load(opts.imdbDir);
 
-    imdb = load(opts.imdbDir);
 
->>>>>>> 329c8ae1a13ad8b5c5dabaa219ec9c00da535ad7
     %% setup network
     netOpts.lossType = 1;
     netOpts.inputSize = 125;
@@ -35,11 +29,7 @@
     netOpts.averageImage = reshape(single([123,117,104]), [1,1,3]);
     net = initDCFNet(netOpts);
     net.meta.normalization.averageImage = netOpts.averageImage;
-<<<<<<< HEAD
- 
-=======
 
->>>>>>> 329c8ae1a13ad8b5c5dabaa219ec9c00da535ad7
     %% online tracking opts
     opts.trackOpts.gpus = opts.gpus;
     opts.trackOpts.visualization = 0;
@@ -79,11 +69,6 @@
         @(x,y) getTrainBatch(x, y, 'gpus', [1], ...
                    'averageImage', netOpts.averageImage, ...
                    'augFlip', true, 'flipProb', 0.25);
-<<<<<<< HEAD
- 
-=======
-
->>>>>>> 329c8ae1a13ad8b5c5dabaa219ec9c00da535ad7
     net = ul_cnn_train_dag(net, imdb, opts); 
     
     modelPath = @(ep) fullfile(opts.outDir, sprintf('net-epoch-%d.mat', ep));

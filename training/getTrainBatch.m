@@ -28,12 +28,11 @@ function inputs = getTrainBatch(imdb, batch, varargin)
         end
     end
  
-    if opts.augFlip & rand < opts.flipProb
-%         index = randperm(size(target,4), round(size(target,4) * opts.flipProb));
-%         for i = 1:numel(index)
-%             search(:,:,:,index(i)) = fliplr(search(:,:,:,index(i)));
-%         end
-        search = fliplr(search);
+    if opts.augFlip
+        index = randperm(size(target,4), round(size(target,4) * opts.flipProb));
+        for i = 1:numel(index)
+            search(:,:,:,index(i)) = fliplr(search(:,:,:,index(i)));
+        end
     end
     
 %     if opts.augRotate
