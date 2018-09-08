@@ -1,4 +1,4 @@
-function net = ul_cnn_train_dag(net, imdb, varargin)
+function net = ul_get_dataoffline(net, imdb, varargin)
     opts.outDir = 'data/snapshot/';
     opts.outPairImgDir = 'data/pairs';
     opts.saveModelDir = 'models/';
@@ -60,6 +60,7 @@ function net = ul_cnn_train_dag(net, imdb, varargin)
     end
     
     learningRate = opts.trainOpts.learningRate;
+    n = 1;
     for e = startEpoch+1:opts.trainOpts.numEpochs        
         opts.trainOpts.learningRate = learningRate(e);
         
@@ -75,7 +76,7 @@ function net = ul_cnn_train_dag(net, imdb, varargin)
         else
             perm = 1:numel(imdb.images.data);
         end
-        
+
         if opts.gpus >= 1
             net.move('gpu');
             for i = 1:numel(state.solverState)
@@ -89,48 +90,15 @@ function net = ul_cnn_train_dag(net, imdb, varargin)
         end
         
         trackingNumPerEpoch = ceil(numel(perm) / opts.trackOpts.trackingNumClips);
-        stats.num = 0 ; % return something even if subset = []
-        stats.time = 0 ;
-        start = tic;
         for t = 1:trackingNumPerEpoch
             bstart = (t-1) * opts.trackOpts.trackingNumClips + 1;
             bend = min(t * opts.trackOpts.trackingNumClips, numel(imdb.images.data));
             trainData = opts.trainOpts.getDataFcn(imdb, net, perm(bstart:bend), opts.trackOpts, e); 
-            
-            numData = size(trainData.target, 4);
-            trainBatches = ceil(numData / opts.trainOpts.batchSize);
-            net.mode = 'normal' ;
-            for it = 1:trainBatches
-                bstart = (it - 1) * opts.trainOpts.batchSize + 1;
-                bend = min(it * opts.trainOpts.batchSize, numData);
-                batch = bstart:bend;
-                inputs = opts.trainOpts.getBatchFcn(trainData, batch);
-                net.eval(inputs, opts.trainOpts.derOutputs) ;
-                state = accumulateGradients(net, state, opts.trainOpts, numel(batch), []) ;
-                
-                % Get statistics.
-                time = toc(start) ;
-                batchTime = time - stats.time ;
-                stats.num = stats.num + numel(batch);
-                stats.time = time ;
-                stats = extractStats(stats, net) ;
-                currentSpeed = numel(batch) / batchTime ;
-                averageSpeed = stats.num / time ;
-
-                fprintf('UL-tracker: incremental training: epoch %02d: %3d/%3d:', e, it, trainBatches) ;
-            
-                fprintf(' %.1f (%.1f) Hz', averageSpeed, currentSpeed) ;
-                for f = setdiff(fieldnames(stats)', {'num', 'time', 'train'})
-                    f = char(f) ;
-                    fprintf(' %s: %.3f', f, stats.(f)) ;
-                end
-                fprintf('\n') ;
-            end
-            % save the memory
-            stats.overlapStats = trainData.overlapStats;
-            clear trainData;
+            dataFile = sprintf('%08d', n);
+            save(['F:\Research\tracker_zoo\UL-Tracker\data\pairs\' dataFile '.mat'], 'trainData', '-v7.3');
+            n = n + 1;
+            clear trainData
         end
-        saveShot(net, state, stats, modelPath(e));
     end
         
         

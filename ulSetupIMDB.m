@@ -1,12 +1,12 @@
 clc; clear all; close all;
 
-videoNames = {'SR (1994)'};
+videoNames = {'LR-3 (2003)'};
 
 % setup or load imdb
-imdbOpts.imgDir = 'C:\SR (1994) - Resized';
-imdbOpts.boxDir = 'D:\Dataset\Video\movie-dataset\boxes\SR (1994)';
+imdbOpts.imgDir = 'D:\Dataset\Video\movie-dataset\images\LR-3 (2003) - Resized/';
+imdbOpts.boxDir = 'D:\Dataset\Video\movie-dataset\boxes\LR-3 (2003  )';
 imdbOpts.clipDir = ['data/clips/' videoNames{1} '_clips.mat'];
-imdbOpts.imdbPath = ['data/imdb/' videoNames{1} '_nobbrm_imdb.mat'];
+imdbOpts.imdbPath = ['data/imdb/' videoNames{1} '_imdb.mat'];
 imdbOpts.isSegment = true;
 imdbOpts.minFramesPerSegment = 10;
 

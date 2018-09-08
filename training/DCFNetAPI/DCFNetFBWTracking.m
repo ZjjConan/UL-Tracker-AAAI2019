@@ -8,10 +8,10 @@ function matches = DCFNetFBWTracking(net, imgs, boxes, opts)
         images = single(imgs);
     end
     
-    numBatches = ceil(size(boxes, 1) / opts.FBWBatchSize);
+    numBatches = ceil(size(boxes, 1) / opts.FBABatchSize);
     for b = 1:numBatches
-        bstart = (b-1) * opts.FBWBatchSize + 1;
-        bend = min(b * opts.FBWBatchSize, size(boxes, 1));
+        bstart = (b-1) * opts.FBABatchSize + 1;
+        bend = min(b * opts.FBABatchSize, size(boxes, 1));
         batch = bstart:bend;
         for i = 1:numImages
             if i == 1

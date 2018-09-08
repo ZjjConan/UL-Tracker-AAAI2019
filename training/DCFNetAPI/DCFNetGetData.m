@@ -16,6 +16,7 @@ function data = DCFNetGetData(imdb, net, batch, opts, epoch)
     data.target = cell(numBatches, 1);
     data.search = cell(numBatches, 1);
     inputSize = [net.meta.inputSize net.meta.inputSize];
+    numOverlaps = zeros(1, 6);
     for b = 1:numBatches
         subBatchStart = (b - 1) * subBatchSize + 1;
         subBatchEnd = min(b * subBatchSize, numel(batch));
@@ -35,16 +36,27 @@ function data = DCFNetGetData(imdb, net, batch, opts, epoch)
             bbox(:, 1:2) = bbox(:, 1:2) - 1;
             matches = opts.trackingFcn(net4track, imgs, bbox, opts);    
             % FB verification
-            score = FBWLocVerify(matches);
-            % nms removing
-            pick = NMSPick([bbox score], 0.3);
-            score = score(pick);
-            % sort
-            [score, order] = sort(score, 'descend');
-            idx = score > opts.selectThre;
-            order = order(idx);
-            % select
-            sel = pick(order(1:min(numel(order), opts.selectNums)));
+            if opts.FBA
+                score = FBWLocVerify(matches);
+                numOverlaps(1) = numOverlaps(1) + sum(score < 0.1);
+                numOverlaps(2) = numOverlaps(2) + sum(score < 0.2);
+                numOverlaps(3) = numOverlaps(3) + sum(score < 0.3);
+                numOverlaps(4) = numOverlaps(4) + sum(score < 0.4);
+                numOverlaps(5) = numOverlaps(5) + sum(score < 0.5);
+                numOverlaps(6) = numOverlaps(6) + numel(score);
+                % nms removing
+                pick = NMSPick([bbox score], 0.3);
+                score = score(pick);
+                % sort
+                [score, order] = sort(score, 'descend');
+                idx = score > opts.selectThre;
+                order = order(idx);
+                % select
+                sel = pick(order(1:min(numel(order), opts.selectNums)));
+            else
+                num = size(bbox, 1);
+                sel = randperm(num, min(num, opts.selectNums));
+            end
             
             x_boxes = matches.for{1}(sel, :);
             z_boxes = matches.for{2}(sel, :);
@@ -81,6 +93,7 @@ function data = DCFNetGetData(imdb, net, batch, opts, epoch)
     end
     data.target = cat(4, data.target{:});
     data.search = cat(4, data.search{:});
+    data.overlapStats = numOverlaps;
 end
 
 function score = FBWLocVerify(matches)

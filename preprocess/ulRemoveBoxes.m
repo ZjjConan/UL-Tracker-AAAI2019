@@ -14,6 +14,9 @@ function ulRemoveBoxes(varargin)
     
     opts.removeWithBorder = false;
     
+    opts.removeWithNMS = false;
+    opts.NMSThreshold = 0.3;
+    
     [opts, varargin] = vl_argparse(opts, varargin);
     
     ulMakeDir(opts.saveDir);
@@ -65,6 +68,14 @@ function ulRemoveBoxes(varargin)
                 bbox(~ok, :) = [];
             end
         end
+        
+        if opts.removeWithNMS
+            bbox_ = bbox;
+            bbox_(:,3:4) = bbox_(:,3:4) + bbox(:,1:2);
+            pick = bboxNMS([bbox_ [size(bbox_,1):-1:1]'], opts.NMSThreshold);
+            bbox = bbox(pick, :);
+        end
+        
         save(fullfile(opts.saveDir, [names{i} '.mat']), 'bbox');
         if mod(i, 100) == 0
             fprintf('%s: remove boxes in %d / %d image time %.2fs\n', ...

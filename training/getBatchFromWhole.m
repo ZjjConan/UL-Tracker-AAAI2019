@@ -1,4 +1,4 @@
-function [imgs, boxes] = get_track_batch_from_whole(imdb, batch, opts) 
+function [imgs, boxes] = getBatchFromWhole(imdb, batch, opts) 
 
     curr = batch;
     next = batch + randi(opts.maxInterval, 1, numel(batch));

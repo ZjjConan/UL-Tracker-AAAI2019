@@ -1,13 +1,12 @@
 % script for self-supervised learning using dcfnet
 clc;
 
-videoName = 'LR-3 (2003)';
+videoName = 'SR (1994)';
 etime = 1;
-for etime = 1
 
 %% general settings
 opts.imdbDir = ['data/imdb/' videoName '_imdb.mat'];
-opts.saveModelName = ['DCFNet - ' videoName];
+opts.saveModelName = ['DCFNet - ' videoName ' - nil'];
 
 opts.outDir = 'data/snapshot/';
 opts.saveModelDir = 'F:\Research\tracker_zoo\DCFNet\model';
@@ -17,8 +16,6 @@ opts.gpus = [1];
 
 opts.outDir = fullfile(opts.outDir, [opts.saveModelName ' - r' num2str(etime)]);
 ulMakeDir(opts.outDir);
-
-imdb = load(opts.imdbDir);
 
 %% setup network
 netOpts.lossType = 1;
@@ -39,7 +36,7 @@ opts.trackOpts.selectNums = 16;
 opts.trackOpts.selectThre = 0.7;
 opts.trackOpts.FBABatchSize = 10;
 opts.trackOpts.trackingFcn = @DCFNetFBWTracking;
-opts.trackOpts.getBatchFcn = @getBatchFromClip;
+opts.trackOpts.getBatchFcn = @getBatchFromWhole;
 opts.trackOpts.FBA = true;
 opts.trackOpts.gridGenerator = ...
     dagnn.AffineGridGenerator('Ho', netOpts.inputSize, ...
@@ -63,18 +60,11 @@ opts.trainOpts.numEpochs = numel(opts.trainOpts.learningRate);
 opts.trainOpts.derOutputs = {'objective', 1};
 opts.trainOpts.continue = true;
 
-opts.trainOpts.getDataFcn = @DCFNetGetData;
-opts.trainOpts.getBatchFcn = ...
-    @(x,y) getTrainBatch(x, y, 'gpus', [1], ...
-    'averageImage', netOpts.averageImage, ...
-    'augFlip', true, 'flipProb', 0.25);
-
-net = ul_cnn_train_dag(net, imdb, opts);
+net = ul_cnn_train_woil(net, opts);
 
 modelPath = @(ep) fullfile(opts.outDir, sprintf('net-epoch-%d.mat', ep));
 for i = 1:opts.trainOpts.numEpochs
     load(modelPath(i));
     net = deployDCFNet(dagnn.DagNN.loadobj(net));
     save(fullfile(opts.saveModelDir, [opts.saveModelName ' - e' num2str(i) '.mat']), 'net');
-end
 end

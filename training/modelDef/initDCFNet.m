@@ -32,12 +32,10 @@ function net = initDCFNet(opts)
     
     feature_sz = opts.inputSize([1,1]) - [4, 4];
 
-    
     net.meta.interp_factor = 0.0110;
     net.meta.scale_penalty = 1;
     net.meta.scale_step = 1.0150;
-    
-    
+
     target_sz = opts.inputSize([1,1])/(1+opts.padding);
     sigma = sqrt(prod(target_sz))/10;
     DCF = dagnn.DCF('win_size', feature_sz,'sigma', sigma) ;

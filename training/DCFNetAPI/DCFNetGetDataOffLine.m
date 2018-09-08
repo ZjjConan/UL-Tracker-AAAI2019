@@ -11,7 +11,7 @@ function data = DCFNetGetData(imdb, net, batch, opts, epoch)
         net.move('gpu');
     end
  
-    subBatchSize = 2;
+    subBatchSize = 20;
     numBatches = ceil(numel(batch)/subBatchSize);
     data.target = cell(numBatches, 1);
     data.search = cell(numBatches, 1);
@@ -35,16 +35,21 @@ function data = DCFNetGetData(imdb, net, batch, opts, epoch)
             bbox(:, 1:2) = bbox(:, 1:2) - 1;
             matches = opts.trackingFcn(net4track, imgs, bbox, opts);    
             % FB verification
-            score = FBWLocVerify(matches);
-            % nms removing
-            pick = NMSPick([bbox score], 0.3);
-            score = score(pick);
-            % sort
-            [score, order] = sort(score, 'descend');
-            idx = score > opts.selectThre;
-            order = order(idx);
-            % select
-            sel = pick(order(1:min(numel(order), opts.selectNums)));
+            if opts.FBA
+                score = FBWLocVerify(matches);
+                % nms removing
+                pick = NMSPick([bbox score], 0.3);
+                score = score(pick);
+                % sort
+                [score, order] = sort(score, 'descend');
+                idx = score > opts.selectThre;
+                order = order(idx);
+                % select
+                sel = pick(order(1:min(numel(order), opts.selectNums)));
+            else
+                num = size(bbox, 1);
+                sel = randperm(num, min(num, opts.selectNums));
+            end
             
             x_boxes = matches.for{1}(sel, :);
             z_boxes = matches.for{2}(sel, :);

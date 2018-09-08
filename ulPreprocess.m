@@ -4,7 +4,7 @@ clc; clear all; close all;
 % opts.saveDir = 'D:/Dataset/Video/movie-dataset/images/';
 % opts.boxDir = 'D:\Dataset\Video\movie-dataset\boxes-clean\';
 % videoNames = {'DK (2008).mkv', 'GF (1972).mkv', 'GF-II (1974).mkv', 'LR-III (2003).mkv', 'SR (1994).mkv'};
-% videoNames = {'DK (2008)', 'GF (1972)', 'GF-II (1974)', 'LR-III (2003)', 'SR (1994)'};
+videoNames = {'DK (2008)', 'GF (1972)', 'GF-II (1974)', 'LR-III (2003)', 'SR (1994)'};
 % for i = 1:5
 %     boxDir = fullfile(opts.boxDir, videoNames{i});
 %     boxFiles = dir([boxDir '/*.mat']);
@@ -41,6 +41,7 @@ clc; clear all; close all;
 % params.removeWithRatio = true;
 % params.boxRatio = [0.1 0.7];
 % params.removeWithBorder = false;
+% params.removeWithNMS = true;
 % % 
 % for i = 5
 %     [~, vname, ~] = fileparts(videoNames{i});
@@ -48,22 +49,23 @@ clc; clear all; close all;
 %     ulRemoveBoxes('movieName', vname, ...
 %                   'imgDir', fullfile(opts.imgDir, vname), ...
 %                   'boxDir', fullfile(opts.boxDir, vname), ...
-%                   'saveDir', fullfile(opts.saveDir, vname), ...
+%                   'saveDir', fullfile(opts.saveDir, [vname '-nms']), ...
 %                   params);
 % end
 % 
 % 
 % segment videos
-opts.imgDir = 'C:\';
-opts.boxDir = 'D:\Dataset\Video\movie-dataset\boxes_clean\';
+opts.imgDir = 'D:\Dataset\Video\movie-dataset\images\';
+% opts.imgDir = 'C:\';
+opts.boxDir = 'D:\Dataset\Video\movie-dataset\boxes\';
 opts.saveDir = 'data/clips';
 
 params.useCorr = true;
-params.batchSize = 50;
+params.batchSize = 100;
 params.corrMinThre = 0.1;
 params.resizeRatio = 0.2;
 params.debug = false;
-videoNames = {'SR (1994)', 'DK (2008)', 'GF (1972)', 'GF-II (1974)', 'LR-III (2003)'};
+videoNames = {'LR-3 (2003)'};
 for i = 1
     [~, vname, ~] = fileparts(videoNames{i});
     params.imgDir = fullfile(opts.imgDir, [vname ' - Resized']);

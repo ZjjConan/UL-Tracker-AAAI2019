@@ -1,7 +1,7 @@
-etime = [1];
+etime = [2];
 
 for i = 1:numel(etime)
-    script_train_dcfnet(etime(i));
+    ulDCFNetTrain(etime(i));
 end
 
 % script_extract_edgebox;
