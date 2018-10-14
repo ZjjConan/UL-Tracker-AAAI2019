@@ -55,7 +55,7 @@ videoNames = {'DK (2008)', 'GF (1972)', 'GF-II (1974)', 'LR-III (2003)', 'SR (19
 % 
 % 
 % segment videos
-opts.imgDir = 'D:\Dataset\Video\movie-dataset\images\';
+opts.imgDir = 'C:\';
 % opts.imgDir = 'C:\';
 opts.boxDir = 'D:\Dataset\Video\movie-dataset\boxes\';
 opts.saveDir = 'data/clips';
@@ -65,12 +65,15 @@ params.batchSize = 100;
 params.corrMinThre = 0.1;
 params.resizeRatio = 0.2;
 params.debug = false;
-videoNames = {'LR-3 (2003)'};
+videoNames = {'GF (1972)'};
+threshold = [0.3];
 for i = 1
-    [~, vname, ~] = fileparts(videoNames{i});
+    [~, vname, ~] = fileparts(videoNames{1});
     params.imgDir = fullfile(opts.imgDir, [vname ' - Resized']);
     params.boxDir = fullfile(opts.boxDir, vname);
-    params.saveDir = fullfile(opts.saveDir, [vname '_clips.mat']);
+    
+    params.corrMinThre = threshold(i);
+    params.saveDir = fullfile(opts.saveDir, [vname '_clips_' num2str(threshold(i)) '.mat']);
     groupVideoFrames(params);
 end
 

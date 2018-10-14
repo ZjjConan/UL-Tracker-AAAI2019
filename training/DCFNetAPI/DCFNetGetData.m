@@ -80,10 +80,7 @@ function data = DCFNetGetData(imdb, net, batch, opts, epoch)
             z_grids = generateBilinearGrids(z_pos, z_sz, opts);
             target{i} = vl_nnbilinearsampler(imgs(:,:,:,1), x_grids); 
             search{i} = vl_nnbilinearsampler(imgs(:,:,:,2), z_grids);
-  
-%             target{i} = bilinearCrop(imgs(:,:,:,1), x_pos(:, [2,1]), x_sz([2,1], :), inputSize, opts.yyxx);
-%             search{i} = bilinearCrop(imgs(:,:,:,2), z_pos(:, [2,1]), z_sz([2,1], :), inputSize, opts.yyxx);
-        
+   
             fprintf('UL-Tracker: FBW tracking: epoch %02d: %2d / %2d batch %2d / %2d images time %.2fs\n', ...
                 epoch, b, numBatches, i, numImages, toc);
         end
