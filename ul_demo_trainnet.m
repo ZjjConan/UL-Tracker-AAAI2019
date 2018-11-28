@@ -1,5 +1,5 @@
 % script for self-supervised learning using DCFNet
-clc; clear all; close all
+% clc; clear all; close all
 
 %% general settings
 opts.imdbDir = 'data/imdb/SR (1994)_imdb.mat';
@@ -8,7 +8,7 @@ opts.saveModelDir = 'data/model/';
 opts.gpus = [1];
 ul_make_dir(opts.outDir);
 
-imdb = load(opts.imdbDir);
+% imdb = load(opts.imdbDir);
 
 %% setup network
 netOpts.lossType = 1;
@@ -46,7 +46,7 @@ opts.trainOpts.weightDecay = 0.0005;
 opts.trainOpts.learningRate = logspace(-2, -3, 10);
 opts.trainOpts.numEpochs = numel(opts.trainOpts.learningRate);
 opts.trainOpts.derOutputs = {'objective', 1};
-opts.trainOpts.continue = false;
+opts.trainOpts.continue = true;
 
 opts.trainOpts.getDataFcn = @build_database;
 opts.trainOpts.getBatchFcn = @(x,y) ul_get_train_batch(x, y, 'gpus', [1], ...

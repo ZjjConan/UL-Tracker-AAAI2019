@@ -1,4 +1,5 @@
 function img_crop = track_crop_impl(img, pos, sz, output_sz, yyxx)
+% copy from DCFNet
     [im_h,im_w,im_c,~] = size(img);
 
     if im_c == 1
