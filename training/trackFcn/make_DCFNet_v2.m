@@ -1,4 +1,4 @@
-function net = make_DCFNet(opts)
+function net = make_DCFNet_v2(opts)
 % copy from DCFNet
     net = dagnn.DagNN() ;
     
