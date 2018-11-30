@@ -22,7 +22,6 @@ clear all;
 
 % get short video clips
 opts.imgDir = 'C:/SR (1994) - Resized/';
-opts.boxDir = 'D:/Dataset/Video/movie-dataset/boxes/SR (1994)/';
 opts.saveDir = 'data/clips/SR (1994).mat';
 opts.useCorr = true;
 opts.batchSize = 100;

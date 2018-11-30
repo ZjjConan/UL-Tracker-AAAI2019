@@ -1,5 +1,5 @@
 % script for self-supervised learning using DCFNet
-% clc; clear all; close all
+clc; clear all; close all
 
 %% general settings
 opts.imdbDir = 'data/imdb/SR (1994)_imdb.mat';
@@ -8,13 +8,13 @@ opts.saveModelDir = 'data/model/';
 opts.gpus = [1];
 ul_make_dir(opts.outDir);
 
-% imdb = load(opts.imdbDir);
+imdb = load(opts.imdbDir);
 
 %% setup network
 netOpts.lossType = 1;
 netOpts.inputSize = 125;
-netOpts.padding = 2;
-net = make_DCFNet(netOpts);
+netOpts.padding = 1.5;
+net = make_DCFNet_v1(netOpts);
 
 %% train-tracking opts
 opts.trackOpts.gpus = opts.gpus;
@@ -35,9 +35,9 @@ opts.trackOpts.grayProb = 0.25;
 opts.trackOpts.blurImage = true;
 opts.trackOpts.blurSigma = 4;
 opts.trackOpts.blurProb = 0.25;
-opts.trackOpts.rotateImage = false;
+opts.trackOpts.rotateImage = true;
 opts.trackOpts.rotateProb = 0.25;
-opts.trackOpts.rotateRange = [-pi pi]/6;
+opts.trackOpts.rotateRange = [-pi pi]/9;
 
 % train-trainOpts
 opts.trainOpts.randpermute = true;
@@ -46,7 +46,7 @@ opts.trainOpts.weightDecay = 0.0005;
 opts.trainOpts.learningRate = logspace(-2, -3, 10);
 opts.trainOpts.numEpochs = numel(opts.trainOpts.learningRate);
 opts.trainOpts.derOutputs = {'objective', 1};
-opts.trainOpts.continue = true;
+opts.trainOpts.continue = false;
 
 opts.trainOpts.getDataFcn = @build_database;
 opts.trainOpts.getBatchFcn = @(x,y) ul_get_train_batch(x, y, 'gpus', [1], ...

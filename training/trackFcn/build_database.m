@@ -29,7 +29,6 @@ function data = build_database(imdb, net, batch, opts, epoch)
         for i = 1:numImages
             imgs = images(:,:,:,[i, i+numImages]);
             bbox = single(bboxes{i});
-            bbox = bbox(1:min(size(bbox,1), 100), :);
           
             bbox(:, 1:2) = bbox(:, 1:2) - 1;
             matches = opts.trackingFcn(net4track, imgs, bbox, opts);    
@@ -62,9 +61,7 @@ function data = build_database(imdb, net, batch, opts, epoch)
                 z_sz = gpuArray(z_sz);
             end
             
-%             opts.rotateImage = false;
             x_grids = generate_bilinear_grids(x_pos, x_sz, opts);
-%             opts.rotateImage = true;
             z_grids = generate_bilinear_grids(z_pos, z_sz, opts);
             target{i} = vl_nnbilinearsampler(imgs(:,:,:,1), x_grids); 
             search{i} = vl_nnbilinearsampler(imgs(:,:,:,2), z_grids);

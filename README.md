@@ -2,14 +2,70 @@
 
 This repository includes Matlab code for the following paper:
 
-Learning a Visual Tracker from a Single Movie without Annotation
+**[Learning a Visual Tracker from a Single Movie without Annotation (AAAI-2019)](https://www4.comp.polyu.edu.hk/~cslzhang/paper/UL-Tracker.pdf)**
 
-Lingxiao Yang, David Zhang, Lei Zhang
-
-AAAI-2019
+*Lingxiao Yang, David Zhang, Lei Zhang*
 
 ### Introduction
-This paper focus on the method that off-line pre-trains a robust visual tracker. Based on recently introduced DCFNet [1], this paper iteratively updates the tracker by alternating between target localization and network optimization. Besides, the tracker is learned from a single movie, which could be easily obtained other than collecting thousands of video clips or millions of images.
+This paper proposes a method that off-line pre-learns a DCFNet [1] in an unsuperivsed manner. It formulates the optimization as a two-stage learning pipeline, which iteratively updates the tracker by alternating between target localization and network optimization. Besides, the tracker is learned from a single movie, for which the data could be easily obtained other than collecting thousands of video clips or millions of images.
 
-**The learning network can be directly used in DCFNet software [2].**
+**The trained network can be directly used in DCFNet software [2].**
 
+--------------------------------------------------------------------------------------
+
+### Requirements
+```
+1. MatConvNet-1.0-beta24 or latest
+3. git clone https://github.com/ZjjConan/UL-Tracker-AAAI2019.git
+```
+
+Please follow this [website](http://www.vlfeat.org/matconvnet/install/) to compile MatConvNet with GPU support.
+
+***Options:*** To extract SSW proposals, we use OpenCV3.0 and [mexopencv](https://github.com/kyamagu/mexopencv), please follow the mexopencv's website to compile them with opencv extra **contrib** module.
+
+### Preprocessed Data
+
+We only provide the extracted proposals and images for **The Shawshank Redemption** in the following links. For other movies, interested readers can pre-process these movies by the provided codes in this repository.
+
+[BaiduYun](https://pan.baidu.com/s/4o9QQaEm) or [GoogleDrive](https://drive.google.com/open?id=1OweBcSLZWd4QTyO3uQgOfDG96SR0QtQ1)
+
+<!-- **Note:** This is a little difference to the original paper, we downsample each images twice for fast propossing. We found that the final performance is slightly better than original one (maybe it is because of a good seed for random initialization ^_^).
+
+
+|	        |   OTB-2013        |  OTB-2015     |  VOT-2015  |
+| :----     |    :----:         | :----:        | :----:     |
+| Org Paper |    62.47 (1.37)   | 57.45 (0.64)  | 0.2234     |
+| This Repo |    63.14          | 59.45         |           -->
+
+### How to Train
+
+1. Get frames and proposals from the above links, and compile all required softwares.
+2. Use *ul_group_frames* to get clip index for each frame.
+3. Use *ul_create_imdb* to create a *imdb.mat* for training.
+4. Use *ul_demo_trainnet* to train the network.
+
+Moe detail parameter settings can be found in each *ul_demo_** files.
+
+### New Movie
+Please check *ul_demo_preprocess* to find the pre-process steps for new data.
+
+-------------------------------------------------
+
+
+### Citation
+If you find UL-Tracker useful in your research, please consider citing:
+
+UL-Tracker (not now)
+
+
+@article{wang17dcfnet,
+    Author = {Qiang Wang, Jin Gao, Junliang Xing, Mengdan Zhang, Weiming Hu},
+    Title = {DCFNet: Discriminant Correlation Filters Network for Visual Tracking},
+    Journal = {arXiv preprint arXiv:1704.04057},
+    Year = {2017}
+}
+
+### Reference
+[1] Wang Q, Gao J, Xing J, et al. Dcfnet: Discriminant correlation filters network for visual tracking [J]. arXiv preprint arXiv:1704.04057, 2017.
+
+[2] https://github.com/foolwood/DCFNet

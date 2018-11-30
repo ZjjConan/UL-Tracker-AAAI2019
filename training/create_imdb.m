@@ -10,11 +10,6 @@ function imdb = create_imdb(varargin)
       
     [opts, ~] = vl_argparse(opts, varargin);
     
-    if exist(opts.imdbPath, 'file')
-        imdb = load(opts.imdbPath);
-        return;
-    end
-    
     imdb.images.data = ul_dir(opts.imgDir, 'jpg');
     boxFiles = ul_dir(opts.boxDir, 'mat');
     nbox = numel(boxFiles);
@@ -22,7 +17,7 @@ function imdb = create_imdb(varargin)
     tic
     for i = 1:numel(boxFiles)
         s = load(boxFiles{i});
-        bbox{i} = single(s.bbox(:, 1:4)) * 0.5;
+        bbox{i} = single(s.bbox(:, 1:4));
         if mod(i, 1000) == 0
             fprintf('%s: load %d / %d box file time %.2fs\n', mfilename, i, nbox, toc);
         end

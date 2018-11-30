@@ -1,7 +1,6 @@
 function ul_group_frames(varargin)
 
     opts.imgDir = '';
-    opts.boxDir = '';
     opts.debug = false;
 
     opts.saveDir = 'data';
