@@ -17,7 +17,7 @@ function imdb = create_imdb(varargin)
     tic
     for i = 1:numel(boxFiles)
         s = load(boxFiles{i});
-        bbox{i} = single(s.bbox(:, 1:4));
+        bbox{i} = single(s.bbox);
         if mod(i, 1000) == 0
             fprintf('%s: load %d / %d box file time %.2fs\n', mfilename, i, nbox, toc);
         end

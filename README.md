@@ -25,16 +25,20 @@ Please follow this [website](http://www.vlfeat.org/matconvnet/install/) to compi
 
 ### Preprocessed Data
 
-We only provide the extracted proposals and images for **The Shawshank Redemption** in the following links. For other movies, interested readers can pre-process these movies by the provided codes in this repository.
+We provide the extracted proposals and images for **The Shawshank Redemption** in the following links. For other movies, interested readers can pre-process these movies by the provided codes in this repository.
 
 [BaiduYun](https://pan.baidu.com/s/1jtcUo0M77KRhWmyrET5HsA) or [GoogleDrive](https://drive.google.com/open?id=1OweBcSLZWd4QTyO3uQgOfDG96SR0QtQ1)
 
-**Note:** This is a little difference to the original paper, we downsample each images twice for fast propossing. We found that the final performance is slightly better than original one (maybe it is because of a good seed for random initialization ^_^).
+**Note:** This is a little difference to the original paper, we downsample each images twice for fast propossing. We found that the final performance is slightly better than original one (maybe it is because of a good seed for random initialization ^_^). Results are shown below:
 
 |	              |   OTB-2013 (AUC) |  OTB-2015 (AUC) |  VOT-2015 (A) | VOT-2015 (R) | VOT-2015 (EAO) |
 | :----           |    :----:        | :----:          | :----:        |  :----:      | :----: | 
+| DCFNet [1]      |    62.24         | 58.37           | 0.53          | 1.68         | 0.2174 |
 | AAAI-2019 Paper |    62.47 (1.37)  | 57.45 (0.64)    | 0.53          | 1.70         | 0.2234 |
-| This Repository |    **63.22**     | **59.01**       | **0.56**      | **1.55**     | **0.2473** |        
+| This Repository |    **63.22**     | **59.01**       | **0.56**      | **1.55**     | **0.2473** |    
+
+***These comparisons are based on the DCFNet_1.0. Since DCFNet_2.0 shows significant better performance than its 1.0 version, currently we are willing to achieve more robust tracking by optimizing DCFNet_2.0.***
+
 
 ### How to Train
 
@@ -51,18 +55,17 @@ Please check *ul_demo_preprocess* to find the pre-process steps for new data.
 -------------------------------------------------
 
 
+### Contact
+
+Lingxiao Yang
+
+Email: lingxiao.yang717@gmail.com
+
+
 ### Citation
-If you find UL-Tracker useful in your research, please consider citing:
+If you find UL-Tracker useful in your research, please consider cite:
 
-UL-Tracker (currently not available)
-
-
-    @article{wang17dcfnet,
-        Author = {Qiang Wang, Jin Gao, Junliang Xing, Mengdan Zhang, Weiming Hu},
-        Title = {DCFNet: Discriminant Correlation Filters Network for Visual Tracking},
-        Journal = {arXiv preprint arXiv:1704.04057},
-        Year = {2017}
-    }
+**UL-Tracker (currently not available)**
 
 ### Reference
 [1] Wang Q, Gao J, Xing J, et al. Dcfnet: Discriminant correlation filters network for visual tracking [J]. arXiv preprint arXiv:1704.04057, 2017.
