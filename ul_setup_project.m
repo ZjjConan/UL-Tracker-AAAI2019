@@ -12,8 +12,8 @@ function ul_setup_project()
     
     % setup current path
     root = fileparts(fileparts(mfilename('fullpath'))) ;
-    addpath(fullfile(root, 'UL-Tracker/preprocess'));
-    addpath(fullfile(root, 'UL-Tracker/utils'));
-    addpath(genpath(fullfile(root, 'UL-Tracker/training')));
-    addpath(fullfile(root, 'UL-Tracker/layers'));
+    addpath(fullfile(root, 'UL-Tracker-AAAI2019/preprocess'));
+    addpath(fullfile(root, 'UL-Tracker-AAAI2019/utils'));
+    addpath(genpath(fullfile(root, 'UL-Tracker-AAAI2019/training')));
+    addpath(fullfile(root, 'UL-Tracker-AAAI2019/layers'));
 end

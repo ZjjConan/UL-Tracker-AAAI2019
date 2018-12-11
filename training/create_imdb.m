@@ -6,6 +6,8 @@ function imdb = create_imdb(varargin)
     % segment video to clips
     opts.isSegment = true;
     opts.clipDir = '';
+    opts.numProposals = 100;
+    opts.scaleRatio = 1;
     opts.minFramesPerSegment = 10;
       
     [opts, ~] = vl_argparse(opts, varargin);
@@ -17,7 +19,7 @@ function imdb = create_imdb(varargin)
     tic
     for i = 1:numel(boxFiles)
         s = load(boxFiles{i});
-        bbox{i} = single(s.bbox);
+        bbox{i} = single(s.bbox(1:min(size(s.bbox,1),opts.numProposals), :) * opts.scaleRatio);
         if mod(i, 1000) == 0
             fprintf('%s: load %d / %d box file time %.2fs\n', mfilename, i, nbox, toc);
         end

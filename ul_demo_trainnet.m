@@ -35,7 +35,7 @@ opts.trackOpts.grayProb = 0.25;
 opts.trackOpts.blurImage = true;
 opts.trackOpts.blurSigma = 4;
 opts.trackOpts.blurProb = 0.25;
-opts.trackOpts.rotateImage = false;
+opts.trackOpts.rotateImage = true;
 opts.trackOpts.rotateProb = 0.25;
 opts.trackOpts.rotateRange = [-pi pi]/9;
 
