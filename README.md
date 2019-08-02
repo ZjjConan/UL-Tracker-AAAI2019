@@ -65,14 +65,14 @@ Email: lingxiao.yang717@gmail.com
 ### Citation
 If you find UL-Tracker useful in your research, please consider cite:
 
-@inproceedings{yang2019learning,
-    title={Learning a Visual Tracker from a Single Movie without Annotation},
-    author={Yang, Lingxiao and Zhang, David and Zhang, Lei},
-    booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
-    volume={33},
-    pages={9095--9102},
-    year={2019}
-}
+    @inproceedings{yang2019learning,
+      title={Learning a Visual Tracker from a Single Movie without Annotation},
+      author={Yang, Lingxiao and Zhang, David and Zhang, Lei},
+      booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+      volume={33},
+      pages={9095--9102},
+      year={2019}
+    }
 
 ### Reference
 [1] Wang Q, Gao J, Xing J, et al. Dcfnet: Discriminant correlation filters network for visual tracking [J]. arXiv preprint arXiv:1704.04057, 2017.
