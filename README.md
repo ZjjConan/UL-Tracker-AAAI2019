@@ -66,12 +66,12 @@ Email: lingxiao.yang717@gmail.com
 If you find UL-Tracker useful in your research, please consider cite:
 
 @inproceedings{yang2019learning,
-  title={Learning a Visual Tracker from a Single Movie without Annotation},
-  author={Yang, Lingxiao and Zhang, David and Zhang, Lei},
-  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
-  volume={33},
-  pages={9095--9102},
-  year={2019}
+    title={Learning a Visual Tracker from a Single Movie without Annotation},
+    author={Yang, Lingxiao and Zhang, David and Zhang, Lei},
+    booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+    volume={33},
+    pages={9095--9102},
+    year={2019}
 }
 
 ### Reference
